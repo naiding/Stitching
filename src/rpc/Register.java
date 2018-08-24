@@ -51,7 +51,7 @@ public class Register extends HttpServlet {
             JSONObject obj = new JSONObject();
             	if (conn.existUser(username)) {
             		obj.put("status", "username exists");
-			} else if (conn.createUser(username, email, pwd)) {
+			} else if (conn.createUser(username, pwd, email)) {
 				obj.put("status", "ok");
 			} else {
 				obj.put("status", "create user failed");
