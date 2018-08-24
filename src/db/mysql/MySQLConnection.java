@@ -58,20 +58,20 @@ public class MySQLConnection implements DBConnection {
 	}
 	
 	@Override
-	public boolean createUser(String username, String email, String password) {
+	public boolean createUser(String username, String password, String email) {
 		if (conn == null) {
 			return false;
 		}
 		
 		try {			
 			String sql = "INSERT INTO users "
-	            			+ "(username, email, password, vip_level) "
+	            			+ "(username, password, email, vip) "
 	            			+ "VALUES "
 	            			+ "(?, ?, ?, '0')";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, username);
-			stmt.setString(2, email);
-			stmt.setString(3, password);
+			stmt.setString(2, password);
+			stmt.setString(3, email);
             stmt.executeUpdate();
             	
             return true;
@@ -104,5 +104,24 @@ public class MySQLConnection implements DBConnection {
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public String getUserVip(String username) {
+		if (conn == null) {
+			return null;
+		}
+		try {
+			String sql = "SELECT vip FROM users WHERE username = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, username);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				return rs.getString("vip");
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

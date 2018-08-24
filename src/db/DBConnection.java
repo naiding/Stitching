@@ -22,7 +22,7 @@ public interface DBConnection {
      * @param password
      * @return
      */
-    public boolean createUser(String username, String email, String password);
+    public boolean createUser(String username, String password, String email);
 
     /**
      * Return whether the credential is correct. (This is not needed for main
@@ -33,4 +33,11 @@ public interface DBConnection {
      * @return boolean
      */
     public boolean verifyLogin(String username, String password);
+    
+    /**
+     * Return the vip level of the user
+     * @param username
+     * @return String
+     */
+    public String getUserVip(String username);
 }

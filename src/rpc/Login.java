@@ -42,8 +42,10 @@ public class Login extends HttpServlet {
                 obj.put("status", "Session invalid");
             } else {
                 String username = (String) session.getAttribute("username");
+                	String vip = (String) session.getAttribute("vip");
                 obj.put("status", "OK");
                 obj.put("username", username);
+                	obj.put("vip", vip);
             }
             RpcHelper.writeJsonObject(response, obj);
         } catch (JSONException e) {
@@ -67,12 +69,16 @@ public class Login extends HttpServlet {
             
             if (conn.verifyLogin(username, pwd)) {
                 HttpSession session = request.getSession();
-                session.setAttribute("user_id", username);
+                
+                	String vip = conn.getUserVip(username);
+                session.setAttribute("username", username);
+                session.setAttribute("vip", vip);
                 // Set session to expire in 10 minutes.
                 session.setMaxInactiveInterval(10 * 60);
                 // Get user name
                 obj.put("status", "OK");
                 obj.put("username", username);
+                obj.put("vip", vip);
             } else {
                 response.setStatus(401);
             }
