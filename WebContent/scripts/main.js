@@ -3,6 +3,7 @@
     init();
 
     var imgFiles = new Array();
+    
     function init() {
         console.log("Hello");
         	
@@ -13,13 +14,18 @@
     function showImages() {
         var fileDom = $("inputGroupFile02");
         var previewDom = $("preview");
+        
         for (var i = 0; i < fileDom.files.length; i++) {
             var file = fileDom.files[i];
+            
             var imageType = /^image\//;
             if(!imageType.test(file.type)) {
                 alert("Please select images");
                 return;
             }
+            
+            imgFiles.push(file);
+
             var reader = new FileReader();
             reader.onload = function(e) {
                 var div = $("div", {
@@ -31,14 +37,17 @@
                     alt: "screenshot"
                 }))
                 previewDom.appendChild(div);
-//                previewDom.appendChild(document.createElement("br"));
             };
-            imgFiles.push(file);
             reader.readAsDataURL(file);
         }
     }
 
     function uploadImages() {
+    	if(imgFiles.length < 2) {
+    		alert("Total images number must be larger than 1.");
+    		return;
+    	} 
+    	
         var formData = new FormData();
 		for (var i = 0; i < imgFiles.length; i++) {
 			formData.append("file", imgFiles[i]);
@@ -54,9 +63,14 @@
                 window.URL.revokeObjectURL(img.src); 
             };
             img.src = window.URL.createObjectURL(blob);
-            img.className = "img-thumbnail col-4";
+            img.className = "img-thumbnail";
+            
+            var div = $("div", {
+            	className: "col-4"
+            })
+            div.appendChild(img);
             $("preview").innerHTML = "";
-            $("preview").appendChild(img);
+            $("preview").appendChild(div);
 		},
 
 		function() {
