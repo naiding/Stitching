@@ -19,3 +19,12 @@ html {
 #preview {
     max-width: 90%;
 }
+
+#choosefile {
+	text-align: left;
+}
+
+#uploadfile {
+	border: none;
+	padding: 0;
+}
