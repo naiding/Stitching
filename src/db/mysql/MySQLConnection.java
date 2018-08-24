@@ -65,9 +65,9 @@ public class MySQLConnection implements DBConnection {
 		
 		try {			
 			String sql = "INSERT INTO users "
-	            			+ "(username, email, password, first_name, last_name, vip_level) "
+	            			+ "(username, email, password, vip_level) "
 	            			+ "VALUES "
-	            			+ "(?, ?, ?, 'default', 'default', '0')";
+	            			+ "(?, ?, ?, '0')";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, username);
 			stmt.setString(2, email);
@@ -80,28 +80,6 @@ public class MySQLConnection implements DBConnection {
 		}
 	
 		return false;
-	}
-	
-	@Override
-	public String getFullname(String username) {
-		if (conn == null) {
-			return "";
-		}
-		
-		String name = "";
-		try {
-			String sql = "SELECT first_name, last_name FROM users WHERE username = ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, username);
-			ResultSet rs = stmt.executeQuery();
-			
-			while (rs.next()) {
-				name = String.join(" ", rs.getString("first_name"), rs.getString("last_name"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return name;
 	}
 
 	@Override

@@ -30,8 +30,6 @@ public class MySQLTableCreation {
             		+ "username VARCHAR(255) NOT NULL,"
             		+ "email VARCHAR(255) NOT NULL,"
             		+ "password VARCHAR(255) NOT NULL,"
-            		+ "first_name VARCHAR(255),"
-            		+ "last_name VARCHAR(255),"
             		+ "vip_level VARCHAR(255) NOT NULL," 
             		+ "PRIMARY KEY (username)"
             		+ ")";
@@ -39,9 +37,9 @@ public class MySQLTableCreation {
             
             // Step 4: insert fake user 1111/3229c1097c00d497a0fd282d586be050
             sql = "INSERT INTO users "
-            		+ "(username, email, password, first_name, last_name, vip_level) "
+            		+ "(username, email, password, vip_level) "
             		+ "VALUES "
-            		+ "('root', 'zhounaiding@gmail.com', '4f5fba03a86607a215fe91bd47735689', 'Leon', 'Zhou', '1')";
+            		+ "('root', 'zhounaiding@gmail.com', '4f5fba03a86607a215fe91bd47735689', '1')";
             stmt.executeUpdate(sql);
 
             System.out.println("Import done successfully");
