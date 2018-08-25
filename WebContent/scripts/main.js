@@ -14,31 +14,29 @@
     function showImages() {
         var fileDom = $("inputGroupFile02");
         var previewDom = $("preview");
-        
-        for (var i = 0; i < fileDom.files.length; i++) {
-            var file = fileDom.files[i];
-            
-            var imageType = /^image\//;
-            if(!imageType.test(file.type)) {
-                alert("Please select images");
-                return;
-            }
-            
-            imgFiles.push(file);
+       
+        function readAndPreview(file) {
+            // Make sure `file.name` matches our extensions criteria
+            if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+            		var reader = new FileReader();
+            		reader.addEventListener("load", function () {
+            			var div = $("div", {
+	  					className : "col-3"
+	  				});
+	  				div.appendChild($("img", {
+	  					className : "img-thumbnail",
+	  					src : this.result,
+	  					alt : "screenshot"
+	  				}))
+	  				previewDom.appendChild(div);
+            		}, false);
+            		imgFiles.push(file);
+            		reader.readAsDataURL(file);
+        		}
+        }
 
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var div = $("div", {
-                    className: "col-3"
-                });
-                div.appendChild($("img", {
-                    className: "img-thumbnail",
-                    src: e.target.result,
-                    alt: "screenshot"
-                }))
-                previewDom.appendChild(div);
-            };
-            reader.readAsDataURL(file);
+        if (fileDom.files) {
+        		[].forEach.call(fileDom.files, readAndPreview);
         }
     }
 
