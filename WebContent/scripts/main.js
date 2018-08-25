@@ -12,32 +12,28 @@
     }
 
     function showImages() {
-        var fileDom = $("inputGroupFile02");
-        var previewDom = $("preview");
-       
-        function readAndPreview(file) {
-            // Make sure `file.name` matches our extensions criteria
-            if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
-            		var reader = new FileReader();
-            		reader.addEventListener("load", function () {
-            			var div = $("div", {
-	  					className : "col-3"
-	  				});
-	  				div.appendChild($("img", {
-	  					className : "img-thumbnail",
-	  					src : this.result,
-	  					alt : "screenshot"
-	  				}))
-	  				previewDom.appendChild(div);
-            		}, false);
-            		imgFiles.push(file);
-            		reader.readAsDataURL(file);
-        		}
-        }
+    	var files = $("inputGroupFile02").files;
+    	for (var i = 0; i < files.length; i++) {
+    		var file = files[i];
+    		if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+    			var reader = new FileReader();
 
-        if (fileDom.files) {
-        		[].forEach.call(fileDom.files, readAndPreview);
-        }
+    			reader.onload = (function(theFile) {
+    				return function(e) {
+    					var div = $("div", {
+    						className : "col-3"
+    					});
+    					div.appendChild($("img", {
+    						className : "img-thumbnail",
+    						src : e.target.result,
+    						alt : "screenshot"
+    					}));
+    					$("preview").appendChild(div);
+    				};
+    			})(file);
+    			reader.readAsDataURL(file);
+			}
+		}
     }
 
     function uploadImages() {
