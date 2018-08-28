@@ -38,9 +38,14 @@ html {
 	padding-top: 20px;
 }
 
-#forgetpassword{
+#forgetpassword {
     text-decoration: underline;
-    color: gray;
+    color: #dee2e6;
+}
+
+#login {
+    text-decoration: underline;
+    color: #dee2e6;
     margin-left: 10px;
 }
 
@@ -56,3 +61,8 @@ html {
 #submit-btn {
     margin-top: 2rem;
 }
+
+#signup-btn-mainpage {
+	padding-top: 10%
+}
+

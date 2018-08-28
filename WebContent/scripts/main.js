@@ -7,6 +7,8 @@
     function init() {
         console.log("Hello");
         $("login-btn").addEventListener('click', login);    
+        $("signup-btn-mainpage").addEventListener('click', signup);
+        $("signup-btn-signuppage").addEventListener('click', register);
         $("inputGroupFile02").addEventListener("change", showImages);
         $("upload-btn").addEventListener("click", uploadImages);
         
@@ -119,6 +121,18 @@
         showElement(loginSection);
     }
     
+    function onSessionInvalid2() {
+        var loginSection = $('login-section');
+        var mainSection = $('main-section');
+        var signupSection = $('signup-section');
+
+        hideElement(mainSection);
+        hideElement(loginSection);
+
+
+        showElement(signupSection);
+    }
+    
     
     // -----------------------------------
     // Login
@@ -137,6 +151,34 @@
         });
         console.log(password);
         ajax('POST', url, req);
+    }
+    
+    // -----------------------------------
+    // Signup
+    // -----------------------------------
+    
+    function signup() {
+    	onSessionInvalid2();
+    }
+    
+    function register() {
+    	var username = $("username-signup").value;
+    	var email = $("email-signup").value;
+        var password = $("password-signup").value;
+        password = md5(username + md5(password));
+
+        // The request parameters
+        var url = './register';
+        var req = JSON.stringify({
+            username : username,
+            email: email,
+            password : password,
+        });
+        console.log(password);
+        ajax('POST', url, req, function() {
+        	location.reload();
+        });
+    	
     }
 
     
