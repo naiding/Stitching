@@ -5,15 +5,15 @@
     var imgFiles = new Array();
     
     function init() {
-        console.log("Hello");
+        onSessionInvalid();
+
         $("login-btn").addEventListener('click', login);    
         $("signup-btn-mainpage").addEventListener('click', signup);
         $("signup-btn-signuppage").addEventListener('click', register);
         $("inputGroupFile02").addEventListener("change", showImages);
         $("upload-btn").addEventListener("click", uploadImages);
         
-        onSessionInvalid();
-        validateSession(); 
+        validateSession();
     }
 
     function showImages() {
@@ -53,10 +53,10 @@
             formData.append("file", imgFiles[i]);
         }
         var url = './upload';
+        console.log('uploading');
 
         ajax('POST', url, formData, 
         function(res) {
-//          alert('upload successfully.');
             var blob = res;
             var img = document.createElement("img");
             img.onload = function(e) {
@@ -106,8 +106,6 @@
         hideElement(signupSection);
     }
     
-    
-    
     function onSessionInvalid() {
         var loginSection = $('login-section');
         var mainSection = $('main-section');
@@ -125,8 +123,6 @@
 
         hideElement(mainSection);
         hideElement(loginSection);
-
-
         showElement(signupSection);
     }
     
@@ -148,7 +144,7 @@
             password : password,
         });
         ajax('POST', url, req, function(res) {
-//        		location.reload();
+        		location.reload();
         });
     }
     
@@ -175,7 +171,7 @@
         });
         console.log(password);
         ajax('POST', url, req, function() {
-        	location.reload();
+//        	location.reload();
         });
     	
     }
@@ -236,13 +232,15 @@
     	}
         xhr.onload = function() {
             if (xhr.status === 200) {
-                callback(xhr.responseText);
+            		if (responseType === "blob") {
+            			callback(xhr.response);
+            		} else {
+                    callback(xhr.responseText);
+            		}
             } else if (xhr.status === 401) {
-            	console.log("verification failed");
-//                onSessionInvalid();
+            		console.log("verification failed");
             } else {
-            	console.log("error in ajax");
-//                errorHandler();
+            		console.log("error in ajax");
             }
         };
 
