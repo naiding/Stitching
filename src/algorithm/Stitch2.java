@@ -8,10 +8,11 @@ import javax.imageio.ImageIO;
 
 public class Stitch2 {
 
-	private static final int MAX_PIXEL_DIFF = 16;
-	private static final int MAX_COMMON_HEIGHT = 100;
+	private static final int MAX_PIXEL_DIFF = 20;
 	private static final int SAMPLE_NUMBER = 20;
-	
+	private static final int COMMON_START_HEIGHT = 0;
+	private static final int MAX_COMMON_HEIGHT = 100;
+
 	private BufferedImage[] images;
 	private int N;
 	private int width;
@@ -56,11 +57,11 @@ public class Stitch2 {
 				int[] offsets = new int [SAMPLE_NUMBER];
 				int[][] lines = new int[SAMPLE_NUMBER][];
 				for (int s = 0; s < offsets.length; s++) {
-					offsets[s] = (int) (Math.random() * MAX_COMMON_HEIGHT);
+					offsets[s] = COMMON_START_HEIGHT + (int) (Math.random() * MAX_COMMON_HEIGHT);
 					lines[s] = getLine(images[i], header + offsets[s]);
 				}
 				int matchHeight = matchWithOutput(lines, offsets);
-				System.out.println("i = " + i + " -> " + matchHeight);
+				System.out.println("i = " + i + ", header = " + header + " -> " + matchHeight);
 				for (int h = header; h < height; h++) {
 					setLine(output, matchHeight + h - header, getLine(images[i], h));
 				}
@@ -81,7 +82,7 @@ public class Stitch2 {
 	}
 	
 	private int matchWithOutput(int[][] lines, int[] offsets) {
-		for (int i = outputHeight - MAX_COMMON_HEIGHT; i >= 0; i--) {
+		for (int i = outputHeight - MAX_COMMON_HEIGHT; i > outputHeight - MAX_COMMON_HEIGHT - height; i--) {
 			boolean isMatch = true;
 			for (int s = 0; s < offsets.length; s++) {
 				isMatch = isMatch && isRoughlySame(lines[s], getLine(output, i + offsets[s]));
