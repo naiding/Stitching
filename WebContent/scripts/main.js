@@ -143,9 +143,15 @@
             username : username,
             password : password,
         });
+
         ajax('POST', url, req, function(res) {
-        		location.reload();
-        });
+			var result = JSON.parse(res);
+
+			// successfully logged in
+			if (result.status === 'OK') {
+				onSessionValid(result);
+			}
+		});
     }
     
     // -----------------------------------
