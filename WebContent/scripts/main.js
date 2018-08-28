@@ -3,6 +3,7 @@
     init();
 
     var imgFiles = new Array();
+    var hasOutput = false;
     
     function init() {
         console.log("Hello");
@@ -17,6 +18,11 @@
     }
     
     function showImages() {
+    	if (hasOutput) {
+    		$("preview").innerHTML = "";
+    		imgFiles = new Array();
+    	}
+    	
         var files = $("inputGroupFile02").files;
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
@@ -27,7 +33,7 @@
                 reader.onload = (function(theFile) {
                     return function(e) {
                         var div = $("div", {
-                            className : "col-3"
+                            className : "col-3 images"
                         });
                         div.appendChild($("img", {
                             className : "img-thumbnail",
@@ -71,6 +77,8 @@
             div.appendChild(img);
             $("preview").innerHTML = "";
             $("preview").appendChild(div);
+            
+            hasOutput = true;
         },
 
         function() {
