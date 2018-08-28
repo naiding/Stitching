@@ -45,24 +45,20 @@ public class Stitch2 {
 
 	private void stitch() {
 		outputHeight = 0;
-		
-		int header = getHeaderHeight();
-		System.out.println("The height of header is : " + header);
-		
+				
 		for (int i = 0; i < N; i++) {
 			if (i == 0) {
 				for (int y = 0; y < height; y++, outputHeight++) {
 					setLine(output, y, getLine(images[0], y));
 				}
-			} else {
+			} else {				
+				int header = getHeaderHeight(images[i - 1], images[i]);
 				int[] offsets = new int [SAMPLE_NUMBER];
 				int[][] lines = new int[SAMPLE_NUMBER][];
-				
 				for (int s = 0; s < offsets.length; s++) {
 					offsets[s] = (int) (Math.random() * MAX_COMMON_HEIGHT);
 					lines[s] = getLine(images[i], header + offsets[s]);
 				}
-				
 				int matchHeight = matchWithOutput(lines, offsets);
 				System.out.println("i = " + i + " -> " + matchHeight);
 				for (int h = header; h < height; h++) {
@@ -111,9 +107,7 @@ public class Stitch2 {
 		return outputHeight;
 	}
 	
-	private int getHeaderHeight() {
-		BufferedImage img1 = images[0];
-		BufferedImage img2 = images[1];
+	private int getHeaderHeight(BufferedImage img1, BufferedImage img2) {
 		int h = 0;
 		for (; h < height; h++) {
 			int[] line1 = getLine(img1, h);
