@@ -15,6 +15,7 @@
     	var files = $("inputGroupFile02").files;
     	for (var i = 0; i < files.length; i++) {
     		var file = files[i];
+    		imgFiles.push(file);
     		if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
     			var reader = new FileReader();
 

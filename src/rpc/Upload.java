@@ -18,6 +18,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import algorithm.Stitch;
+import algorithm.Stitch2;
 
 /**
  * Servlet implementation class Upload
@@ -108,8 +109,10 @@ public class Upload extends HttpServlet {
 					}
             		}
             		
-            		Stitch stitch = new Stitch(files, uploadPath);
-            		File stitchedImage = stitch.getResult();
+//            		Stitch stitch = new Stitch(files, uploadPath);
+//            		File stitchedImage = stitch.getResult();
+            		Stitch2 stitch = new Stitch2(files, uploadPath);
+            		File stitchedImage = stitch.getOutput(uploadPath + File.separator + "output.png");
             		FileInputStream fis = new FileInputStream(stitchedImage);
             		
             		int size = fis.available();
@@ -118,7 +121,7 @@ public class Upload extends HttpServlet {
             		fis.close();
             				
             		//设置返回的文件类型
-            		response.setContentType("image/jpeg");
+            		response.setContentType("image/png");
             		OutputStream os = response.getOutputStream() ;
             		os.write(data);
             		os.flush();

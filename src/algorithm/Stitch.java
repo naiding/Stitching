@@ -45,9 +45,11 @@ public class Stitch {
 				for (int i = 0; i < height; i++) {
 					for (int j = 0; j < width; j++) {
 						int pixel = image.getRGB(j, i);
-						int blue = pixel & 0xFF;
-						imagesHash[idx][i] = imagesHash[idx][i] * 11 + blue;
+//						int blue = pixel & 0xFF;
+						int blue = (pixel & 0xFF) < 200 ? 0 : 255;
+						imagesHash[idx][i] = imagesHash[idx][i] * 13 + blue;
 					}
+					
 				}
 			}
 
