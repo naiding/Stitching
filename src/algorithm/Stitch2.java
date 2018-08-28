@@ -10,7 +10,7 @@ public class Stitch2 {
 
 	private static final int MAX_PIXEL_DIFF = 20;
 	private static final int SAMPLE_NUMBER = 40;
-	private static final int COMMON_START_HEIGHT = 0;
+	private static final int COMMON_START_HEIGHT = 20;
 	private static final int MAX_COMMON_HEIGHT = 100;
 	private static final int UPWARDS_BEST_DETECTION_HEIGHT = 100;
 
@@ -55,7 +55,7 @@ public class Stitch2 {
 				}
 			} else {				
 				int header = getHeaderHeight(images[i - 1], images[i]);
-				header = Math.max(header, 128);
+//				header = header < 20 ? 128 : header;
 				int[] offsets = new int [SAMPLE_NUMBER];
 				int[][] lines = new int[SAMPLE_NUMBER][];
 				for (int s = 0; s < offsets.length; s++) {

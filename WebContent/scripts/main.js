@@ -70,7 +70,7 @@
 
 		function() {
 			alert('upload failed.');
-		});
+		}, "blob");
     }
 
     /**
@@ -107,10 +107,12 @@
      * @param errorHandler -
      *            This is the failed callback
      */
-    function ajax(method, url, data, callback, errorHandler) {
+    function ajax(method, url, data, callback, errorHandler, responseType) {
         var xhr = new XMLHttpRequest();
         xhr.open(method, url, true);
-        xhr.responseType = "blob";
+        	if (responseType) {
+            xhr.responseType = responseType;
+        	}
         xhr.onload = function() {
             if (xhr.status === 200) {
                 callback(xhr.response);
