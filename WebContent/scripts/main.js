@@ -66,7 +66,7 @@
             img.className = "img-thumbnail";
             
             var div = $("div", {
-                className: "col-4"
+                className: "col-10 mx-auto"
             })
             div.appendChild(img);
             $("preview").innerHTML = "";
