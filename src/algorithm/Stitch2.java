@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public class Stitch2 {
 
 	private static final int MAX_PIXEL_DIFF = 16;
-	private static final int MAX_COMMON_HEIGHT = 40;
+	private static final int MAX_COMMON_HEIGHT = 100;
 	private static final int SAMPLE_NUMBER = 20;
 	
 	private BufferedImage[] images;
@@ -94,7 +94,18 @@ public class Stitch2 {
 				}
 			}
 			if (isMatch) {
-				return i;
+				int best = i, bestDiff = Integer.MAX_VALUE;
+				for (int j = best; j >= 0 && j + 10 > best; j--) {
+					int diff = 0;
+					for (int s = 0; s < offsets.length; s++) {
+						diff += getDiff(lines[s], getLine(output, j + offsets[s]));
+					}
+					if (diff < bestDiff) {
+						best = j;
+						bestDiff = diff;
+					}
+				}
+				return best;
 			}
 		}
 		return outputHeight;
@@ -114,11 +125,16 @@ public class Stitch2 {
 		return h;
 	}
 	
-	private boolean isRoughlySame(int[] rgbArray1, int[] rgbArray2) {
+	private int getDiff(int[] rgbArray1, int[] rgbArray2) {
 		int diffSum = 0;
 		for (int i = 0; i < rgbArray1.length; i++) {
 			diffSum += Math.abs((rgbArray1[i] & 0xFF) - (rgbArray2[i] & 0xFF));
 		}
+		return diffSum;
+	}
+	
+	private boolean isRoughlySame(int[] rgbArray1, int[] rgbArray2) {
+		int diffSum = getDiff(rgbArray1, rgbArray2);
 		if (diffSum < rgbArray1.length * MAX_PIXEL_DIFF) {
 			return true;
 		} else {
