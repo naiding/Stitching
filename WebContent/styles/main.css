@@ -24,7 +24,35 @@ html {
 	text-align: left;
 }
 
+.act-form {
+    margin: 0;
+    padding: 0;
+    padding-top: 10%;
+    max-width: 100%
+}
+
 #uploadfile {
+	padding-left: 0;
+	padding-right: 0;
 	border: none;
 	padding-top: 20px;
+}
+
+#forgetpassword{
+    text-decoration: underline;
+    color: gray;
+    margin-left: 10px;
+}
+
+.form-group {
+    max-width: 100%;
+}
+
+.form-content {
+    width: 303px;
+    max-width: 80%
+}
+
+#submit-btn {
+    margin-top: 2rem;
 }

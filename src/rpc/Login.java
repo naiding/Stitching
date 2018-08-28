@@ -40,6 +40,7 @@ public class Login extends HttpServlet {
             if (session == null) {
                 response.setStatus(403);
                 obj.put("status", "Session invalid");
+                System.out.println("failure-get-login");
             } else {
             		response.setStatus(200);
                 String username = (String) session.getAttribute("username");
@@ -47,6 +48,7 @@ public class Login extends HttpServlet {
                 obj.put("status", "OK");
                 obj.put("username", username);
                 	obj.put("vip", vip);
+                	System.out.println("success-get-login");
             }
             RpcHelper.writeJsonObject(response, obj);
         } catch (JSONException e) {
@@ -67,11 +69,11 @@ public class Login extends HttpServlet {
             String pwd = input.getString("password");
             
             JSONObject obj = new JSONObject();
-            
+            	System.out.println("try to post login");
             if (conn.verifyLogin(username, pwd)) {
                 HttpSession session = request.getSession();
                 
-                	String vip = conn.getUserVip(username);
+                String vip = conn.getUserVip(username);
                 session.setAttribute("username", username);
                 session.setAttribute("vip", vip);
                 // Set session to expire in 10 minutes.
@@ -80,7 +82,10 @@ public class Login extends HttpServlet {
                 obj.put("status", "OK");
                 obj.put("username", username);
                 obj.put("vip", vip);
+                
+                System.out.println("success-post-login");
             } else {
+                System.out.println("failure-post-login");
                 response.setStatus(401);
             }
             RpcHelper.writeJsonObject(response, obj);
