@@ -9,6 +9,27 @@
         	
         $("inputGroupFile02").addEventListener("change", showImages);
         $("upload-btn").addEventListener("click", uploadImages);
+        
+        	validateSession();
+    }
+    
+    /**
+     * Session
+     */
+    function validateSession() {
+        // The request parameters
+        var url = './login';
+        var req = JSON.stringify({});
+
+        // make AJAX call
+        ajax('GET', url, req,
+        // session is still valid
+        function(res) {
+            	console.log(res);
+        },
+        function(res) {
+        		console.log(res);
+        });
     }
 
     function showImages() {

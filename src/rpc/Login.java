@@ -41,6 +41,7 @@ public class Login extends HttpServlet {
                 response.setStatus(403);
                 obj.put("status", "Session invalid");
             } else {
+            		response.setStatus(200);
                 String username = (String) session.getAttribute("username");
                 	String vip = (String) session.getAttribute("vip");
                 obj.put("status", "OK");
