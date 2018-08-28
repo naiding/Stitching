@@ -150,7 +150,14 @@
             password : password,
         });
         console.log(password);
-        ajax('POST', url, req);
+        ajax('POST', url, req, function(res) {
+			var result = JSON.parse(res);
+
+			// successfully logged in
+			if (result.status === 'OK') {
+				onSessionValid(result);
+			}
+		});
     }
     
     // -----------------------------------
