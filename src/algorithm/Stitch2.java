@@ -8,10 +8,12 @@ import javax.imageio.ImageIO;
 
 public class Stitch2 {
 
-	private static final int MAX_PIXEL_DIFF = 16;
+	private static final int MAX_PIXEL_DIFF = 20;
+	private static final int SAMPLE_NUMBER = 40;
+	private static final int COMMON_START_HEIGHT = 20;
 	private static final int MAX_COMMON_HEIGHT = 100;
-	private static final int SAMPLE_NUMBER = 20;
-	
+	private static final int UPWARDS_BEST_DETECTION_HEIGHT = 100;
+
 	private BufferedImage[] images;
 	private int N;
 	private int width;
@@ -45,27 +47,24 @@ public class Stitch2 {
 
 	private void stitch() {
 		outputHeight = 0;
-		
-		int header = getHeaderHeight();
-		System.out.println("The height of header is : " + header);
-		
+				
 		for (int i = 0; i < N; i++) {
 			if (i == 0) {
 				for (int y = 0; y < height; y++, outputHeight++) {
 					setLine(output, y, getLine(images[0], y));
 				}
-			} else {
+			} else {				
+				int header = getHeaderHeight(images[i - 1], images[i]);
+//				header = header < 20 ? 128 : header;
 				int[] offsets = new int [SAMPLE_NUMBER];
 				int[][] lines = new int[SAMPLE_NUMBER][];
-				
 				for (int s = 0; s < offsets.length; s++) {
-					offsets[s] = (int) (Math.random() * MAX_COMMON_HEIGHT);
+					offsets[s] = COMMON_START_HEIGHT + (int) (Math.random() * MAX_COMMON_HEIGHT);
 					lines[s] = getLine(images[i], header + offsets[s]);
 				}
-				
 				int matchHeight = matchWithOutput(lines, offsets);
-				System.out.println("i = " + i + " -> " + matchHeight);
-				for (int h = header; h < height; h++) {
+				System.out.println("i = " + i + ", header = " + header + " -> " + matchHeight);
+				for (int h = header + COMMON_START_HEIGHT; h < height; h++) {
 					setLine(output, matchHeight + h - header, getLine(images[i], h));
 				}
 				outputHeight = matchHeight + height - header;
@@ -85,7 +84,7 @@ public class Stitch2 {
 	}
 	
 	private int matchWithOutput(int[][] lines, int[] offsets) {
-		for (int i = outputHeight - MAX_COMMON_HEIGHT; i >= 0; i--) {
+		for (int i = outputHeight - MAX_COMMON_HEIGHT - COMMON_START_HEIGHT; i > outputHeight - height; i--) {
 			boolean isMatch = true;
 			for (int s = 0; s < offsets.length; s++) {
 				isMatch = isMatch && isRoughlySame(lines[s], getLine(output, i + offsets[s]));
@@ -95,7 +94,7 @@ public class Stitch2 {
 			}
 			if (isMatch) {
 				int best = i, bestDiff = Integer.MAX_VALUE;
-				for (int j = best; j >= 0 && j + 10 > best; j--) {
+				for (int j = best; j >= 0 && j + UPWARDS_BEST_DETECTION_HEIGHT > best; j--) {
 					int diff = 0;
 					for (int s = 0; s < offsets.length; s++) {
 						diff += getDiff(lines[s], getLine(output, j + offsets[s]));
@@ -108,12 +107,10 @@ public class Stitch2 {
 				return best;
 			}
 		}
-		return outputHeight;
+		return outputHeight - COMMON_START_HEIGHT;
 	}
 	
-	private int getHeaderHeight() {
-		BufferedImage img1 = images[0];
-		BufferedImage img2 = images[1];
+	private int getHeaderHeight(BufferedImage img1, BufferedImage img2) {
 		int h = 0;
 		for (; h < height; h++) {
 			int[] line1 = getLine(img1, h);

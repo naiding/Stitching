@@ -74,7 +74,7 @@
 
         function() {
             alert('upload failed.');
-        });
+        }, "blob");
     }
     
     
@@ -129,7 +129,6 @@
         var password = $("password").value;
         password = md5(username + md5(password));
 
-        console.log("try to login haha ");
         // The request parameters
         var url = './login';
         var req = JSON.stringify({
@@ -137,11 +136,7 @@
             password : password,
         });
         console.log(password);
-        ajax('POST', url, req,
-        // successful callback
-        function(res) {
-//            onSessionValid();
-        });
+        ajax('POST', url, req);
     }
 
     
@@ -190,11 +185,14 @@
      * @param errorHandler -
      *            This is the failed callback
      */
-    function ajax(method, url, data, callback, errorHandler, credentials) {
+    function ajax(method, url, data, callback, errorHandler, responseType) {
         var xhr = new XMLHttpRequest();
 
         xhr.open(method, url, true);
 
+    	if (responseType) {
+            xhr.responseType = responseType;
+    	}
         xhr.onload = function() {
             if (xhr.status === 200) {
                 callback(xhr.responseText);
@@ -207,7 +205,7 @@
             }
         };
 
-        xhr.withCredentials = credentials;
+       // xhr.withCredentials = credentials;
 
         xhr.onerror = function() {
             console.error("The request couldn't be completed.");
