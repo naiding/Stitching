@@ -11,7 +11,7 @@ public class Stitch2 {
 	private static final int MAX_PIXEL_DIFF = 20;
 	private static final int SAMPLE_NUMBER = 40;
 	private static final int COMMON_START_HEIGHT = 20;
-	private static final int MAX_COMMON_HEIGHT = 100;
+	private static final int MAX_COMMON_HEIGHT = 80;
 	private static final int UPWARDS_BEST_DETECTION_HEIGHT = 100;
 
 	private BufferedImage[] images;
