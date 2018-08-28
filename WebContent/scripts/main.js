@@ -5,17 +5,17 @@
     var imgFiles = new Array();
     
     function init() {
-        onSessionInvalid();
-
+        console.log("Hello");
         $("login-btn").addEventListener('click', login);    
         $("signup-btn-mainpage").addEventListener('click', signup);
         $("signup-btn-signuppage").addEventListener('click', register);
         $("inputGroupFile02").addEventListener("change", showImages);
         $("upload-btn").addEventListener("click", uploadImages);
         
-        validateSession();
+        onSessionInvalid();
+        validateSession();   //todo
     }
-
+    
     function showImages() {
         var files = $("inputGroupFile02").files;
         for (var i = 0; i < files.length; i++) {
@@ -53,10 +53,10 @@
             formData.append("file", imgFiles[i]);
         }
         var url = './upload';
-        console.log('uploading');
 
-        ajax('POST', url, formData, 
+        ajax_blob('POST', url, formData, 
         function(res) {
+//          alert('upload successfully.');
             var blob = res;
             var img = document.createElement("img");
             img.onload = function(e) {
@@ -75,7 +75,7 @@
 
         function() {
             alert('upload failed.');
-        }, "blob");
+        });
     }
     
     
@@ -106,6 +106,8 @@
         hideElement(signupSection);
     }
     
+    
+    
     function onSessionInvalid() {
         var loginSection = $('login-section');
         var mainSection = $('main-section');
@@ -113,6 +115,8 @@
 
         hideElement(mainSection);
         hideElement(signupSection);
+
+
         showElement(loginSection);
     }
     
@@ -123,6 +127,8 @@
 
         hideElement(mainSection);
         hideElement(loginSection);
+
+
         showElement(signupSection);
     }
     
@@ -136,14 +142,13 @@
         var password = $("password").value;
         password = md5(username + md5(password));
 
-        	console.log(password);
         // The request parameters
         var url = './login';
         var req = JSON.stringify({
             username : username,
             password : password,
         });
-
+        console.log(password);
         ajax('POST', url, req, function(res) {
 			var result = JSON.parse(res);
 
@@ -177,7 +182,7 @@
         });
         console.log(password);
         ajax('POST', url, req, function() {
-//        	location.reload();
+        	location.reload();
         });
     	
     }
@@ -228,21 +233,12 @@
      * @param errorHandler -
      *            This is the failed callback
      */
-    function ajax(method, url, data, callback, errorHandler, responseType) {
+    function ajax(method, url, data, callback, errorHandler, credentials) {
         var xhr = new XMLHttpRequest();
-
         xhr.open(method, url, true);
-
-    	if (responseType) {
-            xhr.responseType = responseType;
-    	}
         xhr.onload = function() {
             if (xhr.status === 200) {
-            		if (responseType === "blob") {
-            			callback(xhr.response);
-            		} else {
-                    callback(xhr.responseText);
-            		}
+                callback(xhr.responseText);
             } else if (xhr.status === 401) {
             		console.log("verification failed");
             } else {
@@ -250,8 +246,7 @@
             }
         };
 
-       // xhr.withCredentials = credentials;
-
+        xhr.withCredentials = credentials;
         xhr.onerror = function() {
             console.error("The request couldn't be completed.");
         };
@@ -261,6 +256,31 @@
         } else {
             xhr.setRequestHeader("Content-Type",
                 "application/json;charset=utf-8");
+            xhr.send(data);
+        }
+    }
+    
+    function ajax_blob(method, url, data, callback, errorHandler, credentials) {
+    	var xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.responseType = "blob";
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                callback(xhr.response);
+            } else {
+                errorHandler();
+            }
+        };
+        xhr.withCredentials = credentials;
+        xhr.onerror = function() {
+            console.error("The request couldn't be completed.");
+            errorHandler();
+        };
+
+        if (data === null) {
+            xhr.send();
+        } else {
+            xhr.processData = false;
             xhr.send(data);
         }
     }
