@@ -70,7 +70,7 @@ public class Login extends HttpServlet {
             if (conn.verifyLogin(username, pwd)) {
                 HttpSession session = request.getSession();
                 
-                	String vip = conn.getUserVip(username);
+                String vip = conn.getUserVip(username);
                 session.setAttribute("username", username);
                 session.setAttribute("vip", vip);
                 // Set session to expire in 10 minutes.
@@ -79,6 +79,8 @@ public class Login extends HttpServlet {
                 obj.put("status", "OK");
                 obj.put("username", username);
                 obj.put("vip", vip);
+                
+                System.out.println("success");
             } else {
                 response.setStatus(401);
             }
