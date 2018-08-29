@@ -17,11 +17,11 @@ html {
 }
 
 .container {
-	max-width: 90%;
-	width: 600px;
+	max-width: 95%;
 }
 
 #process-sec {
+   width: 600px;
 	padding: 0;
 }
 
