@@ -33,7 +33,7 @@
         var username = $("username-login").value;
         var password = $("password").value;
         password = md5(username + md5(password));
-
+        	
         // The request parameters
         var url = './login';
         var req = JSON.stringify({
@@ -41,13 +41,18 @@
             password : password,
         });
         console.log(password);
-        ajax('POST', url, req, function(res) {
-            var result = JSON.parse(res);
-            // successfully logged in
-            if (result.status === 'OK') {
-        			window.location.href = ("index.html");
-            }
-        });
+        ajax('POST', url, req, 
+        		function(res) {
+	            var result = JSON.parse(res);
+	            // successfully logged in
+	            if (result.status === 'OK') {
+	        			window.location.href = ("index.html");
+	            }
+	        },
+	        function(res) {
+	        		$("login-error").innerHTML = "Wrong username or password"
+	        }
+        );
     }
     
     function goToSignUp() {
@@ -103,10 +108,8 @@
         xhr.onload = function() {
             if (xhr.status === 200) {
                 callback(xhr.responseText);
-            } else if (xhr.status === 401) {
-            		console.log("verification failed");
             } else {
-            		console.log("error in ajax");
+            		errorHandler(xhr.responseText);
             }
         };
 

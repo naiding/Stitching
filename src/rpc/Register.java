@@ -56,7 +56,7 @@ public class Register extends HttpServlet {
 				session.setAttribute("username", username);
                 session.setAttribute("vip", "0");
                 session.setMaxInactiveInterval(10 * 60);
-				obj.put("status", "ok");
+				obj.put("status", "OK");
 			} else {
 				obj.put("status", "create user failed");
 			}          		

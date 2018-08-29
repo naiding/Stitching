@@ -85,10 +85,9 @@ html {
 	padding-top: 10%
 }
 
-/* footer section */
-footer {
-    background: #005cb2;
-    font-size: 0.8em;
-    height: 200px;
-    position: relative;
+#login-error {
+  clear: both;
+  color: #990000;
+  padding-top: 10px;
 }
+

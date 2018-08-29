@@ -42,7 +42,6 @@ public class Login extends HttpServlet {
                 obj.put("status", "Session invalid");
                 System.out.println("failure-get-login");
             } else {
-            		response.setStatus(200);
                 String username = (String) session.getAttribute("username");
                 	String vip = (String) session.getAttribute("vip");
                 obj.put("status", "OK");
@@ -82,11 +81,11 @@ public class Login extends HttpServlet {
                 obj.put("status", "OK");
                 obj.put("username", username);
                 obj.put("vip", vip);
-                
                 System.out.println("success-post-login");
             } else {
                 System.out.println("failure-post-login");
                 response.setStatus(401);
+                obj.put("status", "Login failed");
             }
             RpcHelper.writeJsonObject(response, obj);
         } catch (JSONException e) {

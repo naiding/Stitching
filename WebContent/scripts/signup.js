@@ -26,11 +26,20 @@
             email: email,
             password : password,
         });
-        ajax('POST', url, req, function() {
-        		window.location.href = ("index.html");
-        	});
+        ajax('POST', url, req, 
+        		function(res) {
+        			var result = JSON.parse(res);
+        			if (result.status === "OK") {
+    	        		window.location.href = ("index.html");
+        			} else {
+        				$("login-error").innerHTML = "Signup failed";
+        			}
+        		},
+        		function(res) {
+        			$("login-error").innerHTML = "Signup failed";
+        		}
+        );
     }
-
 
     /**
      * A helper function that creates a DOM element <tag options...>
@@ -81,10 +90,8 @@
         xhr.onload = function() {
             if (xhr.status === 200) {
                 callback(xhr.responseText);
-            } else if (xhr.status === 401) {
-            		console.log("verification failed");
             } else {
-            		console.log("error in ajax");
+            		errorHandler(xhr.responseText);
             }
         };
 
