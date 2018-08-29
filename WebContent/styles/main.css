@@ -95,7 +95,7 @@ html {
 .footer {
     font-size: 0.8em;
     height: 200px;
-    margin-top: 20%;
+
     position: relative;
 }
 
@@ -122,3 +122,9 @@ html {
    list-style: none;
     flex: 1;
 } 
+
+.footer-section {
+	width: 100%;
+    margin-top: 20%;
+    bottom: 10%;
+}

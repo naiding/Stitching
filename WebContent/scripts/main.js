@@ -77,7 +77,7 @@
                 reader.onload = (function(theFile) {
                     return function(e) {
                         var div = $("div", {
-                            className : "col-3 images"
+                            className : "col-lg-3 col-6 images"
                         });
                         div.appendChild($("img", {
                             className : "img-thumbnail",
