@@ -49,7 +49,7 @@
     		className: "nav-link",
     		href: "logout"
     	});
-    	logoutLink.innerHTML = "logout";
+    	logoutLink.innerHTML = "Logout";
     	logoutItem.appendChild(logoutLink);
     	
     	$("nav-right").appendChild(welcomeItem);
