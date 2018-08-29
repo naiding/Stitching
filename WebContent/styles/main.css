@@ -7,7 +7,7 @@ html {
     height: 100%;
 }
 
-#content .footer {
+#content {
     text-align: center;
     color: #FFFFFF;
     padding-top: 160px;
@@ -92,29 +92,33 @@ html {
   padding-top: 10px;
 }
 
-footer {
+.footer {
     font-size: 0.8em;
     height: 200px;
+    margin-top: 20%;
     position: relative;
 }
 
-footer p {
+.footer p {
     text-align: center;
-    color: #e1e1e1;
+    color: #e9ecef;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2),
+                 0px 8px 13px rgba(0, 0, 0, 0.1),
+                 0px 18px 23px rgba(0, 0, 0, 0.1);
 }
 
-footer p.title {
+.footer p.title {
     font-size: 1.2em;
     padding-top: 80px;
 }
 
-footer ul {
+.footer ul {
     align-items: center;
     display: flex;
     padding: 20px;
 }
 
-footer ul li {
+.footer ul li {
    list-style: none;
     flex: 1;
 } 
