@@ -91,3 +91,28 @@ html {
   padding-top: 10px;
 }
 
+footer {
+    font-size: 0.8em;
+    height: 200px;
+    position: relative;
+}
+
+footer p {
+    text-align: center;
+}
+
+footer p.title {
+    font-size: 1.2em;
+    padding-top: 80px;
+}
+
+footer ul {
+    align-items: center;
+    display: flex;
+    padding: 20px;
+}
+
+footer ul li {
+   list-style: none;
+    flex: 1;
+} 
