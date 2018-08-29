@@ -113,9 +113,8 @@ public class Upload extends HttpServlet {
 //            		Stitch stitch = new Stitch(files, uploadPath);
 //            		File stitchedImage = stitch.getResult();
             		Stitch3 stitch = new Stitch3(files, uploadPath);
-            		File stitchedImage = stitch.getOutput(uploadPath + File.separator + "output.png");
+            		File stitchedImage = stitch.getOutput(uploadPath + File.separator + request.getRemoteHost() + "-output.png");
             		FileInputStream fis = new FileInputStream(stitchedImage);
-            		
             		int size = fis.available();
             		byte data[] = new byte[size] ;
             		fis.read(data) ;
