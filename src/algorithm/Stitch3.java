@@ -6,12 +6,15 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Stitch2 {
-
+public class Stitch3 {
+	
 	private static final int MAX_PIXEL_DIFF = 20;
+	
 	private static final int SAMPLE_NUMBER = 40;
-	private static final int COMMON_START_HEIGHT = 20;
+	
 	private static final int MAX_COMMON_HEIGHT = 100;
+	private static final int NEXT_COMMON_SPACE = 73;
+	
 	private static final int UPWARDS_BEST_DETECTION_HEIGHT = 100;
 
 	private BufferedImage[] images;
@@ -21,7 +24,7 @@ public class Stitch2 {
 	private BufferedImage output;
 	private int outputHeight;
 	
-	public Stitch2(File[] imageFiles, String uploadPath) {
+	public Stitch3(File[] imageFiles, String uploadPath) {
 		this.N = imageFiles.length;
 		if (N < 2) {
 			throw new IllegalArgumentException("At least 2 images are needed here!");
@@ -44,7 +47,6 @@ public class Stitch2 {
 			e.printStackTrace();
 		}
 	}
-
 	private void stitch() {
 		outputHeight = 0;
 				
@@ -53,26 +55,37 @@ public class Stitch2 {
 				for (int y = 0; y < height; y++, outputHeight++) {
 					setLine(output, y, getLine(images[0], y));
 				}
-			} else {				
+			} else {
 				int header = getHeaderHeight(images[i - 1], images[i]);
 				int[] offsets = new int [SAMPLE_NUMBER];
 				int[][] lines = new int[SAMPLE_NUMBER][];
-				for (int s = 0; s < offsets.length; s++) {
-					offsets[s] = COMMON_START_HEIGHT + (int) (Math.random() * MAX_COMMON_HEIGHT);
-					lines[s] = getLine(images[i], header + offsets[s]);
+				int matchHeight = -1, commonStartHeight = 0;
+				while (matchHeight == -1 && 
+						header + commonStartHeight + MAX_COMMON_HEIGHT < height) {
+					for (int s = 0; s < offsets.length; s++) {
+						offsets[s] = (int) (Math.random() * MAX_COMMON_HEIGHT);
+						lines[s] = getLine(images[i], header + commonStartHeight + offsets[s]);
+					}
+					matchHeight = matchWithOutput(lines, offsets);
+					if (matchHeight == -1) {
+						commonStartHeight += NEXT_COMMON_SPACE;
+					}
 				}
-				int matchHeight = matchWithOutput(lines, offsets);
-				System.out.println("i = " + i + ", header = " + header + " -> " + matchHeight);
-				for (int h = header + COMMON_START_HEIGHT; h < height; h++) {
-					setLine(output, matchHeight + h - header, getLine(images[i], h));
+					
+				if (matchHeight == -1) {
+					matchHeight = outputHeight;
+					commonStartHeight = 0;
 				}
-				outputHeight = matchHeight + height - header;
+				System.out.println("i = " + i + ", header = " + header + " -> " + matchHeight + " -> " + commonStartHeight);
+				for (int h = header + commonStartHeight; h < height; h++) {
+					setLine(output, matchHeight + h - header - commonStartHeight, getLine(images[i], h));
+				}
+				outputHeight = matchHeight + height - header - commonStartHeight;
 			}
 		}
 	}
 	
 	public File getOutput(String filePath) {
-//		String filePath = "/Users/naiding/eclipse-workspace/ScreenshotStitching/output.png";
 		File f = new File(filePath);
 		try {
 			ImageIO.write(output.getSubimage(0, 0, width, outputHeight), "png", f);
@@ -83,7 +96,7 @@ public class Stitch2 {
 	}
 	
 	private int matchWithOutput(int[][] lines, int[] offsets) {
-		for (int i = outputHeight - MAX_COMMON_HEIGHT - COMMON_START_HEIGHT; i > outputHeight - height; i--) {
+		for (int i = outputHeight - MAX_COMMON_HEIGHT; i > outputHeight - height; i--) {
 			boolean isMatch = true;
 			for (int s = 0; s < offsets.length; s++) {
 				isMatch = isMatch && isRoughlySame(lines[s], getLine(output, i + offsets[s]));
@@ -106,7 +119,8 @@ public class Stitch2 {
 				return best;
 			}
 		}
-		return outputHeight - COMMON_START_HEIGHT;
+//		return outputHeight - COMMON_START_HEIGHT;
+		return -1;
 	}
 	
 	private int getHeaderHeight(BufferedImage img1, BufferedImage img2) {

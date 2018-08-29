@@ -19,6 +19,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import algorithm.Stitch;
 import algorithm.Stitch2;
+import algorithm.Stitch3;
 
 /**
  * Servlet implementation class Upload
@@ -111,7 +112,7 @@ public class Upload extends HttpServlet {
             		
 //            		Stitch stitch = new Stitch(files, uploadPath);
 //            		File stitchedImage = stitch.getResult();
-            		Stitch2 stitch = new Stitch2(files, uploadPath);
+            		Stitch3 stitch = new Stitch3(files, uploadPath);
             		File stitchedImage = stitch.getOutput(uploadPath + File.separator + "output.png");
             		FileInputStream fis = new FileInputStream(stitchedImage);
             		
