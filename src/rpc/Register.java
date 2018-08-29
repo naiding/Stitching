@@ -52,6 +52,10 @@ public class Register extends HttpServlet {
             	if (conn.existUser(username)) {
             		obj.put("status", "username exists");
 			} else if (conn.createUser(username, pwd, email)) {
+                HttpSession session = request.getSession();
+				session.setAttribute("username", username);
+                session.setAttribute("vip", "0");
+                session.setMaxInactiveInterval(10 * 60);
 				obj.put("status", "ok");
 			} else {
 				obj.put("status", "create user failed");

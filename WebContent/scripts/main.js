@@ -6,17 +6,61 @@
     var hasOutput = false;
     
     function init() {
-        console.log("Hello");
-        $("login-btn").addEventListener('click', login);    
-        $("signup-btn-mainpage").addEventListener('click', signup);
-        $("signup-btn-signuppage").addEventListener('click', register);
+
         $("inputGroupFile02").addEventListener("change", showImages);
         $("upload-btn").addEventListener("click", uploadImages);
         
-        onSessionInvalid();
-        validateSession();   //todo
+        validateSession();
+    }
+
+    function validateSession() {
+        // The request parameters
+        var url = './login';
+        var req = JSON.stringify({});
+
+        // make AJAX call
+        ajax('GET', url, req,
+            function(res) {
+                var result = JSON.parse(res);
+                if (result.status === 'OK') {
+                    console.log(result);
+                    onSessionValid(result.username);
+                }
+            });
     }
     
+    function onSessionValid(username) {
+    	$("nav-right").innerHTML = "";
+    	
+    	var welcomeItem = $("li", {
+    		className: "nav-item"
+    	});
+    	var welcomeLink = $("a", {
+    		className: "nav-link active",
+    		href: "#"
+    	});
+    	welcomeLink.innerHTML = "Hi, " + username;
+    	welcomeItem.appendChild(welcomeLink);
+    	
+    	var logoutItem = $("li", {
+    		className: "nav-item"
+    	})
+    	var logoutLink = $("a", {
+    		className: "nav-link",
+    		href: "logout"
+    	});
+    	logoutLink.innerHTML = "logout";
+    	logoutItem.appendChild(logoutLink);
+    	
+    	$("nav-right").appendChild(welcomeItem);
+    	$("nav-right").appendChild(logoutItem);
+    }
+  
+
+    // -----------------------------------
+    // Choose and show images
+    // -----------------------------------
+
     function showImages() {
     	if (hasOutput) {
     		$("preview").innerHTML = "";
@@ -48,6 +92,10 @@
         }
     }
 
+    // -----------------------------------
+    // Upload images and show result
+    // -----------------------------------
+
     function uploadImages() {
         if(imgFiles.length < 2) {
             alert("Total images number must be larger than 1.");
@@ -62,7 +110,6 @@
 
         ajax_blob('POST', url, formData, 
         function(res) {
-//          alert('upload successfully.');
             var blob = res;
             var img = document.createElement("img");
             img.onload = function(e) {
@@ -85,118 +132,6 @@
             alert('upload failed.');
         });
     }
-    
-    
-    function validateSession() {
-        // The request parameters
-        var url = './login';
-        var req = JSON.stringify({});
-
-        // make AJAX call
-        ajax('GET', url, req,
-        // session is still valid
-        function(res) {
-            var result = JSON.parse(res);
-
-            if (result.status === 'OK') {
-                onSessionValid(result);
-            }
-        });
-    }
-    
-    function onSessionValid(result) {
-    	var loginSection = $('login-section');
-        var mainSection = $('main-section');
-        var signupSection = $('signup-section');
-
-        showElement(mainSection);
-        hideElement(loginSection);
-        hideElement(signupSection);
-    }
-    
-    
-    
-    function onSessionInvalid() {
-        var loginSection = $('login-section');
-        var mainSection = $('main-section');
-        var signupSection = $('signup-section');
-
-        hideElement(mainSection);
-        hideElement(signupSection);
-
-
-        showElement(loginSection);
-    }
-    
-    function onSessionInvalid2() {
-        var loginSection = $('login-section');
-        var mainSection = $('main-section');
-        var signupSection = $('signup-section');
-
-        hideElement(mainSection);
-        hideElement(loginSection);
-
-
-        showElement(signupSection);
-    }
-    
-    
-    // -----------------------------------
-    // Login
-    // -----------------------------------
-
-    function login() {
-        var username = $("username-login").value;
-        var password = $("password").value;
-        password = md5(username + md5(password));
-
-        // The request parameters
-        var url = './login';
-        var req = JSON.stringify({
-            username : username,
-            password : password,
-        });
-        console.log(password);
-        ajax('POST', url, req, function(res) {
-			var result = JSON.parse(res);
-
-			// successfully logged in
-			if (result.status === 'OK') {
-				onSessionValid(result);
-			}
-		});
-    }
-    
-    // -----------------------------------
-    // Signup
-    // -----------------------------------
-    
-    function signup() {
-    	onSessionInvalid2();
-    }
-    
-    function register() {
-    	var username = $("username-signup").value;
-    	var email = $("email-signup").value;
-        var password = $("password-signup").value;
-        password = md5(username + md5(password));
-
-        // The request parameters
-        var url = './register';
-        var req = JSON.stringify({
-            username : username,
-            email: email,
-            password : password,
-        });
-        console.log(password);
-        ajax('POST', url, req, function() {
-        	location.reload();
-        });
-    	
-    }
-
-    
-    
 
     /**
      * A helper function that creates a DOM element <tag options...>
