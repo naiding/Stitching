@@ -18,6 +18,7 @@ html {
 
 .container {
 	max-width: 90%;
+	width: 600px;
 }
 
 #process-sec {
@@ -99,6 +100,7 @@ footer {
 
 footer p {
     text-align: center;
+    color: #e1e1e1;
 }
 
 footer p.title {
