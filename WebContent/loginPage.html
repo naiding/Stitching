@@ -27,7 +27,7 @@
             <a href="#" id="forgetpassword">Forget password?</a>
         </div>
         <div class="container form-content">
-            <form>
+            <form id="login-form">
                 <div class="form-group">
                     <label for="inputUsername" class="text-instruc">User name</label>
                     <input id="username-login" type="text" class="form-control"
@@ -37,13 +37,13 @@
                 <div class="form-group">
                     <label for="inputPassword1" class="text-instruc">Password</label>
                     <input id="password" type="password" class="form-control"
-                        id="inputPassword1" placeholder="Password" minlength="4" maxlength="10" required>
+                        id="inputPassword1" placeholder="Password" minlength="6" maxlength="10" required>
                 </div>
                 
                 <p id="login-error"></p>
                 
                 <div id="submit-login" class="text-center">
-                    <button type="button" class="btn btn-primary btn-block" id="login-btn">Login</button>
+                    <button type="submit" class="btn btn-primary btn-block" id="login-btn">Login</button>
                 </div>
             </form>
             <div id="signup-btn" class="text-center">

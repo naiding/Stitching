@@ -46,12 +46,15 @@
     	        });
     	        console.log(password);
     	        ajax('POST', url, req, 
-    	        	function(res) {
-    		            window.location.href = ("index.html");
+    	        		function(res) {
+    		            var result = JSON.parse(res);
+    		            // successfully logged in
+    		            if (result.status === 'OK') {
+    		        			window.location.href = ("index.html");
+    		            }
     		        },
     		        function(res) {
-    		            var result = JSON.parse(res);
-    		        	$("login-error").innerHTML = result.status;
+    		        		$("login-error").innerHTML = "Wrong username or password";
     		        }
     	        );
     	} else {
@@ -113,7 +116,7 @@
             if (xhr.status === 200) {
                 callback(xhr.responseText);
             } else {
-            	errorHandler(xhr.responseText);
+            		errorHandler(xhr.responseText);
             }
         };
 

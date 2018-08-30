@@ -7,6 +7,8 @@
     
     function init() {
         $("signup-btn-signuppage").addEventListener('click', register);
+        $("signup-form").addEventListener('submit', function(event){event.preventDefault();});
+        
     }
 
     // -----------------------------------
@@ -14,7 +16,7 @@
     // -----------------------------------
 
     function register() {
-        var username = $("username-signup").value;
+		var username = $("username-signup").value;
         var email = $("email-signup").value;
         var password = $("password-signup").value;
         password = md5(username + md5(password));
@@ -26,20 +28,23 @@
             email: email,
             password : password,
         });
-        ajax('POST', url, req, 
+        if ($("signup-form").checkValidity()) {
+	        ajax('POST', url, req, 
+        		function(res) {
+        			window.location.href = ("index.html");
+        		},
+        		
         		function(res) {
         			var result = JSON.parse(res);
-        			if (result.status === "OK") {
-    	        		window.location.href = ("index.html");
-        			} else {
-        				$("login-error").innerHTML = "Signup failed";
-        			}
-        		},
-        		function(res) {
-        			$("login-error").innerHTML = "Signup failed";
+        			$("login-error").innerHTML = result.status;
         		}
-        );
+	        );
+    	} else {
+    		console.log("validation failed");
+    	}
+    	 
     }
+    
 
     /**
      * A helper function that creates a DOM element <tag options...>
@@ -91,7 +96,7 @@
             if (xhr.status === 200) {
                 callback(xhr.responseText);
             } else {
-            		errorHandler(xhr.responseText);
+            	errorHandler(xhr.responseText);
             }
         };
 

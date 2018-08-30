@@ -33,7 +33,6 @@ public class Register extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -47,10 +46,10 @@ public class Register extends HttpServlet {
             String username = input.getString("username");
             String email = input.getString("email");
             String pwd = input.getString("password");
-            	
             JSONObject obj = new JSONObject();
-            	if (conn.existUser(username)) {
-            		obj.put("status", "username exists");
+        	if (conn.existUser(username)) {
+        	    response.setStatus(403);
+        		obj.put("status", "Username already exists");
 			} else if (conn.createUser(username, pwd, email)) {
                 HttpSession session = request.getSession();
 				session.setAttribute("username", username);
@@ -58,9 +57,9 @@ public class Register extends HttpServlet {
                 session.setMaxInactiveInterval(10 * 60);
 				obj.put("status", "OK");
 			} else {
-				obj.put("status", "create user failed");
+			    response.setStatus(403);
+				obj.put("status", "Create user failed");
 			}          		
-         
             RpcHelper.writeJsonObject(response, obj);
         } catch (Exception e) {
             e.printStackTrace();

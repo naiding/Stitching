@@ -40,14 +40,12 @@ public class Login extends HttpServlet {
             if (session == null) {
                 response.setStatus(403);
                 obj.put("status", "Session invalid");
-                System.out.println("failure-get-login");
             } else {
                 String username = (String) session.getAttribute("username");
-                	String vip = (String) session.getAttribute("vip");
+                String vip = (String) session.getAttribute("vip");
                 obj.put("status", "OK");
                 obj.put("username", username);
-                	obj.put("vip", vip);
-                	System.out.println("success-get-login");
+                obj.put("vip", vip);
             }
             RpcHelper.writeJsonObject(response, obj);
         } catch (JSONException e) {
@@ -64,28 +62,23 @@ public class Login extends HttpServlet {
 		DBConnection conn = DBConnectionFactory.getConnection();
         try {
             JSONObject input = RpcHelper.readJSONObject(request);
+            
             String username = input.getString("username");
             String pwd = input.getString("password");
-            
             JSONObject obj = new JSONObject();
-            	System.out.println("try to post login");
+
             if (conn.verifyLogin(username, pwd)) {
-                HttpSession session = request.getSession();
-                
+                HttpSession session = request.getSession();      
                 String vip = conn.getUserVip(username);
                 session.setAttribute("username", username);
                 session.setAttribute("vip", vip);
-                // Set session to expire in 10 minutes.
                 session.setMaxInactiveInterval(10 * 60);
-                // Get user name
                 obj.put("status", "OK");
                 obj.put("username", username);
                 obj.put("vip", vip);
-                System.out.println("success-post-login");
             } else {
-                System.out.println("failure-post-login");
                 response.setStatus(401);
-                obj.put("status", "Login failed");
+                obj.put("status", "Wrong username or password");
             }
             RpcHelper.writeJsonObject(response, obj);
         } catch (JSONException e) {

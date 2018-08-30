@@ -26,7 +26,8 @@
                     console.log(result);
                     onSessionValid(result.username);
                 }
-            });
+            }
+        );
     }
     
     function onSessionValid(username) {
