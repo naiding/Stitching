@@ -94,9 +94,9 @@ public class Upload extends HttpServlet {
             List<FileItem> formItems = upload.parseRequest(request);
             	
             if (formItems != null && formItems.size() > 0) {
-            		File[] files = new File[formItems.size()];
-            		for (int i = 0; i < files.length; i++) {
-            			FileItem item = formItems.get(i);
+        		File[] files = new File[formItems.size()];
+        		for (int i = 0; i < files.length; i++) {
+        			FileItem item = formItems.get(i);
 					// 处理不在表单中的字段
 					if (!item.isFormField()) {
 						String fileName = new File(item.getName()).getName();
@@ -108,23 +108,24 @@ public class Upload extends HttpServlet {
 						item.write(storeFile);
 						files[i] = storeFile;
 					}
-            		}
+        		}
             		
 //            		Stitch stitch = new Stitch(files, uploadPath);
 //            		File stitchedImage = stitch.getResult();
-            		Stitch3 stitch = new Stitch3(files, uploadPath);
-            		File stitchedImage = stitch.getOutput(uploadPath + File.separator + request.getRemoteHost() + "-output.png");
-            		FileInputStream fis = new FileInputStream(stitchedImage);
-            		int size = fis.available();
-            		byte data[] = new byte[size] ;
-            		fis.read(data) ;
-            		fis.close();
-            				
-            		//设置返回的文件类型
-            		response.setContentType("image/png");
-            		OutputStream os = response.getOutputStream() ;
-            		os.write(data);
-            		os.flush();
+        		Stitch3 stitch = new Stitch3(files, uploadPath);
+        		File stitchedImage = stitch.getOutput(uploadPath + File.separator + request.getRemoteHost() + "-output.png");
+        		
+        		FileInputStream fis = new FileInputStream(stitchedImage);
+        		int size = fis.available();
+        		byte data[] = new byte[size] ;
+        		fis.read(data) ;
+        		fis.close();
+        				
+        		//设置返回的文件类型
+        		response.setContentType("image/png");
+        		OutputStream os = response.getOutputStream() ;
+        		os.write(data);
+        		os.flush();
             }
         } catch (Exception e) {
             	e.printStackTrace();
