@@ -74,6 +74,7 @@
     function showImages() {
     	mode = "image";
     	$("preview-video").innerHTML = "";
+    	$("output-img").innerHTML = "";
     	if (nextRound) {
     		$("preview-img").innerHTML = "";
     		imgFiles = new Array();
@@ -111,6 +112,7 @@
     function showVideo() {
     	mode = "video";
     	$("preview-img").innerHTML = "";
+    	$("output-img").innerHTML = "";
 		var file = $("inputFile-video").files[0];
 		if (/\.(mp4)$/i.test(file.name)) {
 			videoFile = file;
@@ -172,8 +174,11 @@
                 className: "col-10 mx-auto"
             })
             div.appendChild(img);
+            $("output-img").innerHTML = "";
+            $("output-img").appendChild(div);
+                
             $("preview-img").innerHTML = "";
-            $("preview-img").appendChild(div);
+            $("preview-video").innerHTML = "";
             
             nextRound = true;
         },

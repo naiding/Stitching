@@ -1,6 +1,10 @@
 body {
-    background-color: #3399ff;
+    background-color: #f7c244;
     font-family: 'Lato', sans-serif;
+}
+
+button {
+    outline: none;
 }
 
 html {
@@ -11,7 +15,7 @@ html {
     text-align: center;
     color: #FFFFFF;
     padding-top: 160px;
-    text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4),
+    text-shadow: 0px 4px 3px rgba(132, 119, 119, 0.4),
                  0px 8px 13px rgba(0, 0, 0, 0.1),
                  0px 18px 23px rgba(0, 0, 0, 0.1);
 }
@@ -21,7 +25,7 @@ html {
 }
 
 #process-sec {
-   width: 600px;
+    width: 600px;
 	padding: 0;
 }
 
@@ -42,6 +46,7 @@ html {
 }
 
 .images {
+	margin-top: 20px;
 	margin-bottom: 10px;
 	padding-left: 3.3px;
 	padding-right: 3.3px;
@@ -102,7 +107,7 @@ html {
 .footer p {
     text-align: center;
     color: #e9ecef;
-    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2),
+    text-shadow: 0px 4px 3px rgba(132, 119, 119, 0.4),
                  0px 8px 13px rgba(0, 0, 0, 0.1),
                  0px 18px 23px rgba(0, 0, 0, 0.1);
 }
@@ -137,23 +142,36 @@ html {
     display: none;
 }
 
-.upload {
-	display: flex;
-	
+#video-container {
+    width: 100%;
+    border: solid 2px #e9ecef;
+    border-radius: 2%;
 }
+
+
+#browseFile-video {
+	width: 95%;
+	margin-left: 5%;
+}
+
+.upload {
+	padding: 0;
+}
+
+#browseFile-image {
+	width: 95%;
+    margin-right: 5%;
+}
+
 
 #upload-btn {
-	top: 27%;
-	left: 60%;
-	position: fixed;
-	
+    text-align: center;
+    width: 100%;
+	padding: auto 10%;
+	margin: 2.5% 0;
 }
 
-#video-container {
-	width: 100%;
-	border: solid 2px #e9ecef;
-	border-radius: 2%;
-}
+
 
 
 
