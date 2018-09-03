@@ -206,7 +206,7 @@
     
     function ajax_blob(method, url, data, callback, errorHandler, credentials) {
     	var xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
+    	xhr.open(method, url, true);
         xhr.responseType = "blob";
         xhr.onload = function() {
             if (xhr.status === 200) {
