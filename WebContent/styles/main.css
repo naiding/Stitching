@@ -128,3 +128,32 @@ html {
     margin-top: 20%;
     bottom: 10%;
 }
+
+#inputFile-image {
+	display: none;
+}
+
+#inputFile-video {
+    display: none;
+}
+
+.upload {
+	display: flex;
+	
+}
+
+#upload-btn {
+	top: 27%;
+	left: 60%;
+	position: fixed;
+	
+}
+
+#video-container {
+	width: 100%;
+	border: solid 2px #e9ecef;
+	border-radius: 2%;
+}
+
+
+

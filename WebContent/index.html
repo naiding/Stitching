@@ -61,19 +61,29 @@
 		</div>
 
 		<div class="container" id="process-sec">
-			<div class="input-group mb-3 btn " id="uploadfile">
-				<div class="custom-file" id="choosefile">
-					<input type="file" class="custom-file-input" id="inputGroupFile02" accept="image/*" multiple="multiple">
-                    <label class="custom-file-label" for="inputGroupFile02"
-                           aria-describedby="inputGroupFileAddon02">Choose file
-                    </label>
+			<div id="uploadfile">
+			
+				<div class="upload">
+					<input id="inputFile-image" type="file" accept="image/*" multiple="multiple">
+                    <button id="browseFile-image">Select Image Here</button>
 				</div>
-				<div class="input-group-append" id="upload-btn">
+				
+                <div class="upload">
+                    <input id="inputFile-video" type="file" accept="video/*">
+                    <button id="browseFile-video">Select Video Here</button>
+                </div>
+                
+				<div id="upload-btn">
 					<span class="input-group-text btn-outline-light"
-						id="inputGroupFileAddon02">Upload</span>
+						id="inputGroupFileAddon02">Stitch now!</span>
 				</div>
 			</div>
-			<div class="row" id="preview"></div>
+			<div class="row" id="preview-img"></div>
+			
+		    <div id="preview-video">
+		    </div>
+		    
+		   
 		</div>
 		<div id="footer-section">
 			<footer class="footer">
