@@ -138,14 +138,12 @@ html {
 }
 
 .upload {
-	display: flex;
+
 	
 }
 
 #upload-btn {
-	top: 27%;
-	left: 60%;
-	position: fixed;
+
 	
 }
 
