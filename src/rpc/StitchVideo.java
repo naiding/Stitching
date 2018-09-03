@@ -17,7 +17,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import algorithm.Stitch3;
 import algorithm.VideoStitcher;
 
 /**
@@ -89,6 +88,9 @@ public class StitchVideo extends HttpServlet {
             // 解析请求的内容提取文件数据
             List<FileItem> formItems = upload.parseRequest(request);
             	if (formItems != null && formItems.size() > 0) {
+            		for (FileItem item : formItems) {
+                		System.out.println(item.getName());
+            		}
             		FileItem item = formItems.get(0);
             		String fileName = new File(item.getName()).getName();
 				String filePath = uploadPath + File.separator + fileName;
