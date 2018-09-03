@@ -180,12 +180,10 @@
             $("preview-video").innerHTML = "";
             
             nextRound = true;
-            $("upload-btn").innerHTML = "Stitch now!";
         },
 
         function() {
             alert('upload failed.');
-            $("upload-btn").innerHTML = "Stitch now!";
         });
     }
 
@@ -261,27 +259,35 @@
     
     function ajax_blob(method, url, data, callback, errorHandler, credentials) {
     	var xhr = new XMLHttpRequest();
+    	
+    	xhr.onloadstart = function() {
+    		$("upload-btn")["disabled"] = "disabled";
+    	}
+    	
+    	xhr.onloadend = function() {
+    		$("upload-btn").removeAttribute("disabled");
+            $("upload-btn").innerHTML = "Stitch now!";
+    	}
+    	
         xhr.upload.onprogress = function (e) {
             if (e.lengthComputable) {
                 var ratio = Math.floor((e.loaded / e.total) * 100);
                 $("upload-btn").innerHTML = "Uploading... " + ratio + "%";
-            		if (ratio === 100) {
-            			$("upload-btn").innerHTML = "Processing & Downloading...";
-            		}
+        		if (ratio === 100) {
+        			$("upload-btn").innerHTML = "Processing & Downloading...";
+        		}
             }
         }
 
     	xhr.open(method, url, true);
         xhr.responseType = "blob";
-        // 
-
-//        xhr.onload = function() {
-//            if (xhr.status === 200) {
-//                callback(xhr.response);
-//            } else {
-//                errorHandler();
-//            }
-//        };
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                callback(xhr.response);
+            } else {
+                errorHandler();
+            }
+        };
         xhr.withCredentials = credentials;
         xhr.onerror = function() {
             console.error("The request couldn't be completed.");
