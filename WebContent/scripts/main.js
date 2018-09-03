@@ -260,21 +260,38 @@
     
     function ajax_blob(method, url, data, callback, errorHandler, credentials) {
     	var xhr = new XMLHttpRequest();
+    	
+        xhr.onreadystatechange = function () { // 状态发生变化时，函数被回调
+            if (xhr.readyState === 4) { // 成功完成
+                // 判断响应结果:
+                if (xhr.status === 200) {
+                    // 成功，通过responseText拿到响应的图片:
+                	console.log("图片已返回！");
+                	callback(xhr.response);
+                } else {
+                    // 失败，根据响应码判断失败原因:
+                	errorHandler();
+                }
+            } else if (xhr.readyState === 1) {
+                console.log("上传成功，正在处理图片。。。");
+            }
+        }
     	xhr.open(method, url, true);
         xhr.responseType = "blob";
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                callback(xhr.response);
-            } else {
-                errorHandler();
-            }
-        };
+        // 
+
+//        xhr.onload = function() {
+//            if (xhr.status === 200) {
+//                callback(xhr.response);
+//            } else {
+//                errorHandler();
+//            }
+//        };
         xhr.withCredentials = credentials;
         xhr.onerror = function() {
             console.error("The request couldn't be completed.");
             errorHandler();
         };
-
         if (data === null) {
             xhr.send();
         } else {
