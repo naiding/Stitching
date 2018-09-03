@@ -84,7 +84,7 @@
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
             imgFiles.push(file);
-            if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+            if ( /\.(jpe?g|png)$/i.test(file.name) ) {
                 var reader = new FileReader();
 
                 reader.onload = (function(theFile) {
@@ -114,12 +114,11 @@
     	$("preview-img").innerHTML = "";
     	$("output-img").innerHTML = "";
 		var file = $("inputFile-video").files[0];
-		if (/\.(mp4)$/i.test(file.name)) {
+		if (/\.(mp4|mov)$/i.test(file.name)) {
 			videoFile = file;
 			var reader = new FileReader();
 			reader.onload = (function(theFile) {
 				return function(e) {
-					
 					$("preview-video").innerHTML = "";
 					var video = $("video", {
 						id: "video-container", 
@@ -127,11 +126,10 @@
 					});
 					
 					video.appendChild($("source", {
-						src: e.target.result,
-						type: "video/mp4"
+						src: e.target.result
+//						type: "video/mp4 video/mov"
 					}))
 					$("preview-video").appendChild(video);
-					
 				};
 			})(file);
 			reader.readAsDataURL(file);
