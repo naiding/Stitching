@@ -158,6 +158,7 @@
     		url = "./stitchvideo";
     		formData.append("file", videoFile);
     	}
+
         ajax_blob('POST', url, formData, 
         function(res) {
             var blob = res;
@@ -179,10 +180,12 @@
             $("preview-video").innerHTML = "";
             
             nextRound = true;
+            $("upload-btn").innerHTML = "Stitch now!";
         },
 
         function() {
             alert('upload failed.');
+            $("upload-btn").innerHTML = "Stitch now!";
         });
     }
 
@@ -258,6 +261,17 @@
     
     function ajax_blob(method, url, data, callback, errorHandler, credentials) {
     	var xhr = new XMLHttpRequest();
+
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                var ratio = Math.floor((e.loaded / e.total) * 100);
+                $("upload-btn").innerHTML = "Uploading... " + ratio + "%";
+            		if (ratio === 100) {
+            			$("upload-btn").innerHTML = "Processing & Downloading...";
+            		}
+            }
+        }
+
     	xhr.open(method, url, true);
         xhr.responseType = "blob";
         xhr.onload = function() {
