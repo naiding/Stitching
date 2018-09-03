@@ -261,7 +261,7 @@
     	var xhr = new XMLHttpRequest();
     	
     	xhr.onloadstart = function() {
-    		$("upload-btn")["disabled"] = "disabled";
+    		$("upload-btn").setAttribute("disabled", "");
     	}
     	
     	xhr.onloadend = function() {
