@@ -3,13 +3,22 @@
     init();
 
     var imgFiles = new Array();
-    var hasOutput = false;
+    var videoFile;
+    var mode;
+    var nextRound = false;
     
     function init() {
 
-        $("inputGroupFile02").addEventListener("change", showImages);
-        $("upload-btn").addEventListener("click", uploadImages);
-        
+        $("inputFile-image").addEventListener("change", showImages);
+        $("browseFile-image").addEventListener("click", function() {
+    		$("inputFile-image").click();
+    	});
+        $("inputFile-video").addEventListener("change", showVideo);
+        $("browseFile-video").addEventListener("click", function() {
+    		$("inputFile-video").click();
+    	});
+        $("upload-btn").addEventListener("click", stitch);
+
         validateSession();
     }
 
@@ -63,12 +72,14 @@
     // -----------------------------------
 
     function showImages() {
-    	if (hasOutput) {
-    		$("preview").innerHTML = "";
+    	mode = "image";
+    	$("preview-video").innerHTML = "";
+    	if (nextRound) {
+    		$("preview-img").innerHTML = "";
     		imgFiles = new Array();
     	}
-    	
-        var files = $("inputGroupFile02").files;
+
+        var files = $("inputFile-image").files;
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
             imgFiles.push(file);
@@ -85,30 +96,68 @@
                             src : e.target.result,
                             alt : "screenshot"
                         }));
-                        $("preview").appendChild(div);
+                        $("preview-img").appendChild(div);
                     };
                 })(file);
                 reader.readAsDataURL(file);
             }
         }
     }
+    
+    // -----------------------------------
+    // Choose and show a video
+    // -----------------------------------
+    
+    function showVideo() {
+    	mode = "video";
+    	$("preview-img").innerHTML = "";
+		var file = $("inputFile-video").files[0];
+		if (/\.(mp4)$/i.test(file.name)) {
+			videoFile = file;
+			var reader = new FileReader();
+			reader.onload = (function(theFile) {
+				return function(e) {
+					
+					$("preview-video").innerHTML = "";
+					var video = $("video", {
+						id: "video-container", 
+						controls: "controls"
+					});
+					
+					video.appendChild($("source", {
+						src: e.target.result,
+						type: "video/mp4"
+					}))
+					$("preview-video").appendChild(video);
+					
+				};
+			})(file);
+			reader.readAsDataURL(file);
+		}
+	
+    }
 
     // -----------------------------------
     // Upload images and show result
     // -----------------------------------
 
-    function uploadImages() {
-        if(imgFiles.length < 2) {
-            alert("Total images number must be larger than 1.");
-            return;
-        } 
-        
-        var formData = new FormData();
-        for (var i = 0; i < imgFiles.length; i++) {
-            formData.append("file", imgFiles[i]);
-        }
-        var url = './upload';
-
+    function stitch() {
+    	var url;
+    	var formData = new FormData();
+    	 
+    	if (mode === "image") {
+    		url = "./stitchimage";
+    		if(imgFiles.length < 2) {
+                alert("Total images number must be larger than 1.");
+                return;
+            } 
+    		for (var i = 0; i < imgFiles.length; i++) {
+                formData.append("file", imgFiles[i]);
+            }
+    	} else {
+    		url = "./stitchvideo";
+    		fromData.append("file", videoFile);
+    	}
         ajax_blob('POST', url, formData, 
         function(res) {
             var blob = res;
@@ -123,10 +172,10 @@
                 className: "col-10 mx-auto"
             })
             div.appendChild(img);
-            $("preview").innerHTML = "";
-            $("preview").appendChild(div);
+            $("preview-img").innerHTML = "";
+            $("preview-img").appendChild(div);
             
-            hasOutput = true;
+            nextRound = true;
         },
 
         function() {
