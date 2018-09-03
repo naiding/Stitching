@@ -32,7 +32,7 @@ public class Upload extends HttpServlet {
     private static final String UPLOAD_DIRECTORY = "upload";
  
     // 上传配置
-    private static final int MEMORY_THRESHOLD   = 1024 * 1024 * 3;  // 3MB
+    private static final int MEMORY_THRESHOLD   = 1024 * 1024 * 10;  // 10MB
     private static final int MAX_FILE_SIZE      = 1024 * 1024 * 40; // 40MB
     private static final int MAX_REQUEST_SIZE   = 1024 * 1024 * 50; // 50MB
 	
@@ -41,14 +41,12 @@ public class Upload extends HttpServlet {
      */
     public Upload() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -110,8 +108,6 @@ public class Upload extends HttpServlet {
 					}
         		}
             		
-//            		Stitch stitch = new Stitch(files, uploadPath);
-//            		File stitchedImage = stitch.getResult();
         		Stitch3 stitch = new Stitch3(files, uploadPath);
         		File stitchedImage = stitch.getOutput(uploadPath + File.separator + request.getRemoteHost() + "-output.png");
         		

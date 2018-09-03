@@ -10,10 +10,10 @@ public class Stitch3 {
 	
 	private static final int MAX_PIXEL_DIFF = 20;
 	
-	private static final int SAMPLE_NUMBER = 40;
+	private static final int SAMPLE_NUMBER = 50;
 	
 	private static final int MAX_COMMON_HEIGHT = 100;
-	private static final int NEXT_COMMON_SPACE = 73;
+	private static final int NEXT_COMMON_SPACE = 67;
 	
 	private static final int UPWARDS_BEST_DETECTION_HEIGHT = 100;
 
