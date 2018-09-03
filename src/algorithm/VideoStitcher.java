@@ -1,9 +1,7 @@
 package algorithm;
 
-import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
-import org.bytedeco.javacv.OpenCVFrameGrabber;
 
 import javax.imageio.ImageIO;
 
@@ -13,7 +11,7 @@ import java.io.IOException;
 
 public class VideoStitcher {
 
-	private FrameGrabber frameGrabber;
+	private FFmpegFrameGrabber frameGrabber;
 	private int frameNum;
 	private int height;
 	private int width;
@@ -32,12 +30,12 @@ public class VideoStitcher {
     Java2DFrameConverter converter = new Java2DFrameConverter();
     
     public VideoStitcher(File videoFile) {
-    	frameGrabber = new OpenCVFrameGrabber(videoFile);
+    	frameGrabber = new FFmpegFrameGrabber(videoFile);
     	startFrameGrabber();
     	frameNum = frameGrabber.getLengthInFrames();
         	height = frameGrabber.getImageHeight();
         	width = frameGrabber.getImageWidth();
-                	
+               
         	output = new BufferedImage(width, height * 5, 1);
 		outputHeight = 0;
         	
@@ -57,9 +55,9 @@ public class VideoStitcher {
 	
     private void stitch() {
         try {
+        		        	
             	System.out.println("Totally " + frameNum + " frames");
-//    		frameGrabber.setFrameNumber(0);
-        		BufferedImage firstImage = converter.getBufferedImage(frameGrabber.grab());
+        		BufferedImage firstImage = converter.getBufferedImage(frameGrabber.grabImage());
         		for (int i = 0; i < height; i++) {
         			setLineForOutput(i, getLine(firstImage, i));
         		}
@@ -69,14 +67,9 @@ public class VideoStitcher {
             	fixedRegionStart = 3 * height / 4 - SCAN_REGION_HEIGHT / 2;
 
             	for (int count = 1; count < frameNum; count += 1) {  
-            		BufferedImage currentImage = converter.getBufferedImage(frameGrabber.grabFrame());
-            		int commonRegionStart = findCommonRegion(currentImage, fixedRegionStart);
-            		
-//            		System.out.println(count + " : " + commonRegionStart);
-            		
+            		BufferedImage currentImage = converter.getBufferedImage(frameGrabber.grabImage());
+            		int commonRegionStart = findCommonRegion(currentImage, fixedRegionStart);            		
             		if (commonRegionStart == -1) {
-            			File f = new File("/Users/naiding/eclipse-workspace/ScreenshotStitching/videos/" + count + ".png");
-            			ImageIO.write(currentImage, "png", f);
             			continue;
             		}
             		
@@ -209,5 +202,4 @@ public class VideoStitcher {
             	e.printStackTrace();
 		}
     }
-    
 }

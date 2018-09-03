@@ -84,7 +84,7 @@
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
             imgFiles.push(file);
-            if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+            if ( /\.(jpe?g|png)$/i.test(file.name) ) {
                 var reader = new FileReader();
 
                 reader.onload = (function(theFile) {
@@ -114,12 +114,11 @@
     	$("preview-img").innerHTML = "";
     	$("output-img").innerHTML = "";
 		var file = $("inputFile-video").files[0];
-		if (/\.(mp4)$/i.test(file.name)) {
+		if (/\.(mp4|mov)$/i.test(file.name)) {
 			videoFile = file;
 			var reader = new FileReader();
 			reader.onload = (function(theFile) {
 				return function(e) {
-					
 					$("preview-video").innerHTML = "";
 					var video = $("video", {
 						id: "video-container", 
@@ -127,11 +126,10 @@
 					});
 					
 					video.appendChild($("source", {
-						src: e.target.result,
-						type: "video/mp4"
+						src: e.target.result
+//						type: "video/mp4 video/mov"
 					}))
 					$("preview-video").appendChild(video);
-					
 				};
 			})(file);
 			reader.readAsDataURL(file);
@@ -160,6 +158,7 @@
     		url = "./stitchvideo";
     		formData.append("file", videoFile);
     	}
+
         ajax_blob('POST', url, formData, 
         function(res) {
             var blob = res;
@@ -181,10 +180,12 @@
             $("preview-video").innerHTML = "";
             
             nextRound = true;
+            $("upload-btn").innerHTML = "Stitch now!";
         },
 
         function() {
             alert('upload failed.');
+            $("upload-btn").innerHTML = "Stitch now!";
         });
     }
 
@@ -260,22 +261,16 @@
     
     function ajax_blob(method, url, data, callback, errorHandler, credentials) {
     	var xhr = new XMLHttpRequest();
-    	
-        xhr.onreadystatechange = function () { // 状态发生变化时，函数被回调
-            if (xhr.readyState === 4) { // 成功完成
-                // 判断响应结果:
-                if (xhr.status === 200) {
-                    // 成功，通过responseText拿到响应的图片:
-                	console.log("图片已返回！");
-                	callback(xhr.response);
-                } else {
-                    // 失败，根据响应码判断失败原因:
-                	errorHandler();
-                }
-            } else if (xhr.readyState === 1) {
-                console.log("上传成功，正在处理图片。。。");
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                var ratio = Math.floor((e.loaded / e.total) * 100);
+                $("upload-btn").innerHTML = "Uploading... " + ratio + "%";
+            		if (ratio === 100) {
+            			$("upload-btn").innerHTML = "Processing & Downloading...";
+            		}
             }
         }
+
     	xhr.open(method, url, true);
         xhr.responseType = "blob";
         // 
