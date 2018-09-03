@@ -156,7 +156,7 @@
             }
     	} else {
     		url = "./stitchvideo";
-    		fromData.append("file", videoFile);
+    		formData.append("file", videoFile);
     	}
         ajax_blob('POST', url, formData, 
         function(res) {
