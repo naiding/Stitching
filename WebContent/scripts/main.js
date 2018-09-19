@@ -4,7 +4,7 @@
 
     var imgFiles = new Array();
     var videoFile;
-    var mode;
+    var mode = "image";
     var nextRound = false;
     
     function init() {
@@ -80,28 +80,40 @@
     		imgFiles = new Array();
     	}
 
-        var files = $("inputFile-image").files;
+    	var files = $("inputFile-image").files;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if (!(/\.(jpe?g|png)$/i.test(file.name))) {
+                $("info").innerHTML = "Must choose png or jpeg file.";
+                return;
+            }
+        }
+
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
             imgFiles.push(file);
-            if ( /\.(jpe?g|png)$/i.test(file.name) ) {
-                var reader = new FileReader();
+            var div = $("div", {
+                className : "col-lg-3 col-6 images",
+                id : file.name
+            });
+            $("preview-img").appendChild(div);
+        }
 
-                reader.onload = (function(theFile) {
-                    return function(e) {
-                        var div = $("div", {
-                            className : "col-lg-3 col-6 images"
-                        });
-                        div.appendChild($("img", {
-                            className : "img-thumbnail",
-                            src : e.target.result,
-                            alt : "screenshot"
-                        }));
-                        $("preview-img").appendChild(div);
-                    };
-                })(file);
-                reader.readAsDataURL(file);
-            }
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    var div = $(theFile.name);
+                    div.appendChild($("img", {
+                        className : "img-thumbnail",
+                        src : e.target.result,
+                        alt : "screenshot"
+                    }));
+                };
+            })(file);
+            reader.readAsDataURL(file);
         }
     }
     
@@ -148,7 +160,10 @@
     	if (mode === "image") {
     		url = "./stitchimage";
     		if(imgFiles.length < 2) {
-                alert("Total images number must be larger than 1.");
+    		    $("info").innerHTML = "Total images number must be larger than 1.";
+    		    var timer = window.setTimeout(function(){
+    		    		$("info").innerHTML = "";
+    		    }, 3000);
                 return;
             } 
     		for (var i = 0; i < imgFiles.length; i++) {

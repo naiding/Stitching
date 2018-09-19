@@ -46,8 +46,6 @@
 						<li class="nav-item"><a class="nav-link" href="#footer-section">Contact</a></li>
 					</ul>
 					<ul class="navbar-nav navbar-right" id="nav-right">
-						<!-- <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user-plus"></i>Signup</a></li> -->
-						<!-- <li class="nav-item"><a class="nav-link" href="logout"><i class="fas fa-user"></i>Logout</a></li> -->
 						<li class="nav-item">
 						    <a class="nav-link" href="loginPage.html"><i class="fas fa-user"></i>Log in</a>
 						</li>
@@ -73,27 +71,20 @@
 
 		<div class="container" id="process-sec">
 			<div id="uploadfile" class="row">
-			
 				<div class="upload col-6">
 					<input id="inputFile-image" type="file" accept="image/*" multiple="multiple">
                     <button id="browseFile-image" class="btn-outline-secondary btn-lg">Select Images Here</button>
 				</div>
-				
                 <div class="upload col-6">
                     <input id="inputFile-video" type="file" accept="video/*">
                     <button id="browseFile-video" class="btn-outline-secondary btn-lg">Select Video Here</button>
                 </div>
-                
 				<button class="btn-primary btn-lg" id="upload-btn">Stitch now!</button>
-				
+                <p id="info"></p>
 			</div>
 			<div class="row" id="preview-img"></div>
-			
-		    <div id="preview-video">
-		    </div>
+		    <div id="preview-video"></div>
 		    <div class="row" id="output-img"></div>
-		    
-		    
 		   
 		</div>
 		<div id="footer-section">
@@ -120,11 +111,7 @@
 			</footer>
 		</div>
 
-
-
 	</div>
-
-	
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
